@@ -2,7 +2,7 @@ import hashlib
 
 
 class Block(object):
-    def __init__(self, blockNumber, data, previousHash=""):
+    def __init__(self, blockNumber, data, previousHash):
         self.blockNumber = blockNumber
         self.nonce = 0
         self.data = data
@@ -43,5 +43,7 @@ class Block(object):
 
 
 if __name__ == "__main__":
-    monPremierBlock = Block(1, "bonjour ")
+    monPremierBlock = Block(1, "bonjour ", "")
+    print(monPremierBlock.data)
+
 
