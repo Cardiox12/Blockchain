@@ -1,5 +1,6 @@
 from block import Block
 import hashlib, sys
+from blockchain_header import display_header
 
 # Mettre dans while code da la fonction allowToCreate
 
@@ -13,24 +14,24 @@ class Blockchain(object):
         self.previousHash = ""
         # Root hash
         self.rootHash = []
-    
+
         #self.allowToCreateNextBlock()
-    
+
         repeat = "o"
-        
+
         while repeat == "o":
             self.allowToCreateNextBlock()
             repeat = str(input("Voulez vous créer un nouveau block ? o/n : "))
-    
-    
+
+
     def allowToCreateNextBlock(self):
         """ Permet de créer un nouveau block si le block courant et les blocks précédents sont valides sinon """
-        
+
         if len(self.blocks) > 0:
             self.previousHash = self.blocks[-1].getHash()
         else:
             self.previousHash = ""
-        
+
         # Si les blocks précédents sont corrompus alors le hash des blocks suivants ne sont plus valides
         if len(self.blocks) == 0 or self.blocks[-1].isValid() == True and self.previousBlocksAreValid() == True:
             self.blockNumber += 1
@@ -38,10 +39,10 @@ class Blockchain(object):
             # Création du nouveau block
             self.blocks.append(Block(self.blockNumber, self.currentData, self.previousHash))
             self.blocks[-1].mine()
-        
+
     def previousBlocksAreValid(self):
         """ Renvoie true si les blocks précédents sont valides """
-        ## USE THE MERKEL TREE POUR VERIFIER L'AUTHENTICITE DES BLOCKS PRÉCÉDENTS
+        ## UTILISER MERKEL TREE POUR VERIFIER L'AUTHENTICITE DES BLOCKS PRÉCÉDENTS
         for block in self.blocks:
             if block.isValid():
                 # print("Le block est valide")
@@ -53,18 +54,20 @@ class Blockchain(object):
                 return False
 
     def merkelTree(self):
-        """ Cette fonction a pour but de s'assurer que les blocks précédents sont inchangés, et de remplacer la fonction previousBlocksAreValid """
-        pass
+        """ Check si les blocks précédents ne sont pas corrompus, et remplace la fonction previousBlocksAreValid """
+
 
 
 
 def displayBlockInfo(blockchain):
-    
+
     for i in range(len(blockchain.blocks)):
         print("-"*70)
         print("Block : {0} \nNonce : {1} \nHash : {2} \nPrevious hash : {3} \nData : {4}".format(blockchain.blocks[i].blockNumber, blockchain.blocks[i].nonce, blockchain.blocks[i].getHash(), blockchain.blocks[i].previousHash, blockchain.blocks[i].data))
         print("-"*70)
 
+
+display_header()
 maBlockchain = Blockchain()
 # print(maBlockchain.blocks[2].data)
 displayBlockInfo(maBlockchain)

@@ -7,15 +7,19 @@ class Block(object):
         self.nonce = 0
         self.data = data
         self.previousHash = previousHash
-        
+        self.hash = ""
+        self.createHash()
+
+        # self.mine()
+    def createHash(self):
+        # Créer une boucle pour passer à travers toutes les variables du Block
         self.hash = hashlib.new("sha256")
         self.hash.update(str(self.blockNumber).encode("utf-8"))
         self.hash.update(str(self.nonce).encode("utf-8"))
         self.hash.update(self.data.encode("utf-8"))
         self.hash.update(str(self.previousHash).encode("utf-8"))
-    
-        # self.mine()
-    
+
+
     def getHash(self):
         """ Return le hash en str """
         return self.hash.hexdigest()
@@ -24,13 +28,13 @@ class Block(object):
         """ Incrémente nonce jusqu'à ce que les 4 premiers caractères du hash soient 0000 """
         while self.isValid() != True:
             self.nonce += 1
-            
+
             self.hash.update(str(self.blockNumber).encode("utf-8"))
             self.hash.update(str(self.nonce).encode("utf-8"))
             self.hash.update(self.data.encode("utf-8"))
-            
-            print("Hash : {}".format(self.getHash()))
-        
+
+#            print("Hash : {}".format(self.getHash()))
+
         print("Is valid for nonce {0}".format(self.nonce))
 
     def isValid(self):
@@ -45,5 +49,3 @@ class Block(object):
 if __name__ == "__main__":
     monPremierBlock = Block(1, "bonjour ", "")
     print(monPremierBlock.data)
-
-
